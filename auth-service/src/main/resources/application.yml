@@ -1,0 +1,80 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: auth-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/taskflow_auth?createDatabaseIfNotExist=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+
+  jpa:
+    hibernate:
+      ddl-auto: update        # auto-creates otp_details table on startup
+    show-sql: false
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Gmail SMTP Configuration (JavaMailSender)
+  #
+  # SETUP STEPS:
+  #   1. Enable 2-Step Verification on your Google account
+  #      → https://myaccount.google.com/security
+  #   2. Generate an App Password:
+  #      → https://myaccount.google.com/apppasswords
+  #      → Select "Mail" + your device → Copy the 16-char password
+  #   3. Set environment variables OR replace placeholders below:
+  #        MAIL_USERNAME = yourname@gmail.com
+  #        MAIL_PASSWORD = xxxx xxxx xxxx xxxx  (the 16-char app password)
+  # ─────────────────────────────────────────────────────────────────────────
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+jwt:
+  secret: ${JWT_SECRET:taskflowsupersecretkeytaskflowsupersecretkeytaskflowsupersecretkey1234}
+  expiration: 86400000
+
+app:
+  default-admin-email: ${DEFAULT_ADMIN_EMAIL:admin@taskflow.com}
+  default-admin-password: ${DEFAULT_ADMIN_PASSWORD:Admin123}
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 3000
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+logging:
+  level:
+    com.taskflow.auth: INFO
