@@ -1,0 +1,4 @@
+CREATE DATABASE IF NOT EXISTS taskflow_auth;
+CREATE DATABASE IF NOT EXISTS taskflow_user;
+CREATE DATABASE IF NOT EXISTS taskflow_task;
+CREATE DATABASE IF NOT EXISTS taskflow_notification;
